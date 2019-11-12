@@ -5,10 +5,11 @@
  */
 package taskmanager;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -16,28 +17,39 @@ import java.util.Date;
  *
  * @author Rodion
  */
-public class TaskLog {
+public class TaskLog implements TaskInterface {
+    public static String path="myfile";
     private ArrayList <TaskNode> TaskList;
-    public TaskLog()
+    public TaskLog() throws IOException, ClassNotFoundException 
     {
+        FileInputStream in=new FileInputStream(path);
+        ObjectInputStream objectIn = new ObjectInputStream(in);
+        TaskLog tl=(TaskLog)objectIn.readObject();
+        this.TaskList=tl.TaskList;
         
     }
-    public void createTask(String name,String description,Date date)
+    @Override
+    public void createTask(String name,String description,Date date,String number)
     {
-        TaskNode task=new TaskNode(name,description,date);
+        TaskNode task=new TaskNode(name,description,date,number);
         this.TaskList.add(task);
     }
-    public void deleteTask(int index)
+    @Override
+    public void deleteTask(TaskNode object) throws IllegalArgumentException 
     {
-        this.TaskList.remove(index);
+       
+        this.TaskList.remove(object);
+        
     }
-     public void serializeBuilding() throws IOException {
+    @Override
+     public void exit() throws IOException {
          try{
-        FileOutputStream out=  new FileOutputStream("myfile");      
+        FileOutputStream out= new FileOutputStream(path);      
         ObjectOutputStream objectOut = new ObjectOutputStream(out);
         objectOut.writeObject(this);
         out.flush();
          }catch(IOException ioe){
           ioe.printStackTrace();}
     }
+      
 }

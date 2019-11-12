@@ -5,21 +5,24 @@
  */
 package taskmanager;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author Rodion
  */
-public class TaskNode {
+public class TaskNode implements Serializable {
     private String TaskName;
     private String TaskDescription;
     private Date TaskDate;
-    public TaskNode(String name,String description,Date date)
+    private String phoneNumber;
+    public TaskNode(String name,String description,Date date,String number)
     {
         TaskName=name;
         TaskDescription=description;
         TaskDate=date;
+        phoneNumber=number;
     }
     public String getTaskName()
     {
@@ -33,6 +36,10 @@ public class TaskNode {
      {
          return this.TaskDate;
      }
+     public String getPhoneNumber()
+    {
+        return this.phoneNumber;
+    }
      public void setTaskName(String name)
      {
          this.TaskName=name;
@@ -44,5 +51,9 @@ public class TaskNode {
      public void setTaskName(Date date)
      {
          this.TaskDate=date;
+     }
+     public void setPhoneNumber(String number)
+     {
+         this.phoneNumber=number;
      }
 }
